@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Which channel should I choose?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f6f8;--card:#fff;--ink:#16222d;--mute:#5b6b79;--line:#d8dee4;--g:#17794a;--gbg:#dff3e7;--r:#b5301f;--rbg:#fbe7e3;--ac:#0d5c8c;--on:#fff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f161c;--card:#17212a;--ink:#e8eef3;--mute:#9aabb9;--line:#2b3945;--g:#58c58b;--gbg:#12311f;--r:#ff8a78;--rbg:#3a1b16;--ac:#7cc4f0;--on:#0f161c}}
+:root[data-theme="dark"]{--bg:#0f161c;--card:#17212a;--ink:#e8eef3;--mute:#9aabb9;--line:#2b3945;--g:#58c58b;--gbg:#12311f;--r:#ff8a78;--rbg:#3a1b16;--ac:#7cc4f0;--on:#0f161c}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 80px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 Onest,system-ui,-apple-system,"Segoe UI",sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--g)}
+body.red::before{background:var(--r)}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--g);color:var(--on);padding:14px 18px;transition:background .25s}
+body.red header{background:var(--r)}
+.hd{max-width:640px;margin:0 auto}
+.hd b{display:block;font-size:26px;font-weight:800;line-height:1.1}
+.hd span{font-size:14px;opacity:.92}
+main{max-width:640px;margin:0 auto;padding:16px 16px 40px}
+h1{font-size:15px;font-weight:500;color:var(--mute);margin:4px 2px 14px}
+fieldset,details{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:0 0 12px;padding:14px 16px}
+legend{font-weight:700;padding:0 6px}
+summary{font-weight:700;cursor:pointer}
+label{display:block;margin:10px 0 2px;font-size:15px}
+.q{font-weight:500;margin-top:12px}
+.opt{display:flex;gap:10px;align-items:flex-start;margin:6px 0;font-weight:400}
+.opt input{margin-top:5px}
+input[type=number]{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+input:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hint{font-size:13px;color:var(--mute);margin:4px 0 0}
+#res h2{font-size:18px;margin:22px 2px 10px}
+.it{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--r);border-radius:8px;padding:12px 14px;margin:0 0 10px}
+.it.ban{border-left-color:var(--ink)}
+.it b{display:block}
+.it p{margin:4px 0 0;font-size:15px;color:var(--mute)}
+.tag{display:inline-block;font-size:12px;font-weight:700;background:var(--ink);color:var(--bg);border-radius:4px;padding:1px 7px;margin-bottom:4px}
+.ok{background:var(--gbg);border-radius:8px;padding:12px 14px}
+.btn{display:block;text-align:center;background:var(--ac);color:var(--on);font-weight:700;text-decoration:none;border-radius:10px;padding:14px;margin:14px 0}
+.foot{font-size:13px;color:var(--mute);margin-top:22px}
+.out{display:none}body.exit .out{display:flex}body.exit .in{display:none}
+.it a{color:var(--ac);font-weight:500}
+</style>
+</head>
+<body>
+<header><div class="hd" role="status" aria-live="polite"><b id="vt">Green channel</b><span id="vs">All within allowed limits</span></div></header>
+<main>
+<p style="text-align:right;margin:0 2px 6px;font-size:14px"><a href="https://claude.ai/artifact/TQLWRx78BGbHk8bdgxUiWU" style="color:var(--ac)">Українська</a></p>
+<h1>Answer the questions and the summary at the top updates instantly. Fill in only what you are carrying.</h1>
+<form id="f" onsubmit="return false">
+<fieldset><legend>Direction</legend>
+<label class="opt"><input type="radio" name="dir" value="in" checked>Entering Ukraine</label>
+<label class="opt"><input type="radio" name="dir" value="out">Leaving Ukraine</label>
+</fieldset>
+
+<fieldset class="in"><legend>Trip (entering Ukraine)</legend>
+<div class="q">Border crossing point</div>
+<label class="opt"><input type="radio" name="port" value="land" checked>Road, rail or on foot</label>
+<label class="opt"><input type="radio" name="port" value="air">Airport</label>
+<div class="q">Did you last enter Ukraine more than 72 hours ago, or is this your first entry?</div>
+<label class="opt"><input type="radio" name="old72" value="1" checked>Yes</label>
+<label class="opt"><input type="radio" name="old72" value="0">No</label>
+<div id="d24" hidden>
+<div class="q">Was that less than 24 hours ago?</div>
+<label class="opt"><input type="radio" name="day" value="0" checked>No</label>
+<label class="opt"><input type="radio" name="day" value="1">Yes</label>
+</div>
+<div class="q">Were you outside Ukraine for more than 24 hours?</div>
+<label class="opt"><input type="radio" name="abroad" value="1" checked>Yes</label>
+<label class="opt"><input type="radio" name="abroad" value="0">No</label>
+</fieldset>
+
+<fieldset><legend>Ordinary goods</legend>
+<div class="row"><div><label for="val">Value, €</label><input id="val" name="val" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0"></div>
+<div class="in"><label for="kg">Weight, kg</label><input id="kg" name="kg" type="number" min="0" step="0.1" inputmode="decimal" placeholder="0"></div></div>
+<p class="hint">Excluding alcohol, tobacco, food and medicines: they have separate sections below.</p>
+</fieldset>
+
+<details><summary>Alcohol and tobacco</summary>
+<div class="q">Are you 18 or older?</div>
+<label class="opt"><input type="radio" name="adult" value="1" checked>Yes</label>
+<label class="opt"><input type="radio" name="adult" value="0">No</label>
+<label class="opt out"><input type="checkbox" name="alcOut">I am carrying alcohol or tobacco</label>
+<div class="row in"><div><label for="beer">Beer, L</label><input id="beer" name="beer" type="number" min="0" step="0.1" inputmode="decimal"></div>
+<div><label for="wine">Wine, L</label><input id="wine" name="wine" type="number" min="0" step="0.1" inputmode="decimal"></div>
+<div><label for="spirits">Spirits (over 22%), L</label><input id="spirits" name="spirits" type="number" min="0" step="0.1" inputmode="decimal"></div>
+<div><label for="cig">Cigarettes, pcs</label><input id="cig" name="cig" type="number" min="0" step="1" inputmode="numeric"></div>
+<div><label for="cigar">Cigars, pcs</label><input id="cigar" name="cigar" type="number" min="0" step="1" inputmode="numeric"></div>
+<div><label for="tob">Tobacco, g</label><input id="tob" name="tob" type="number" min="0" step="1" inputmode="numeric"></div></div>
+</details>
+
+<details class="in"><summary>Food</summary>
+<label class="opt"><input type="radio" name="food" value="none" checked>Not carrying</label>
+<label class="opt"><input type="radio" name="food" value="ok">For myself: up to €200, up to 2 kg (or one package) of each item</label>
+<label class="opt"><input type="radio" name="food" value="over">More than these limits</label>
+</details>
+
+<details class="in"><summary>Medicines</summary>
+<label class="opt"><input type="radio" name="med" value="none" checked>Not carrying</label>
+<label class="opt"><input type="radio" name="med" value="ok">Up to 5 packages of each name, or per a prescription or certificate issued in my name</label>
+<label class="opt"><input type="radio" name="med" value="over">More than that, without documents, or narcotic or psychotropic</label>
+</details>
+
+<details><summary>Currency, securities, pets, other</summary>
+<label for="cash">Cash and bank metals, € (equivalent)</label><input id="cash" name="cash" type="number" min="0" step="0.01" inputmode="decimal">
+<div class="in"><label for="sec">Payment documents and securities, €</label><input id="sec" name="sec" type="number" min="0" step="0.01" inputmode="decimal"></div>
+<label class="opt"><input type="checkbox" name="pet">I am carrying a pet</label>
+<label class="opt"><input type="checkbox" name="gun">I am carrying weapons or ammunition: firearms, air guns, bladed weapons, cartridges</label>
+<label class="opt"><input type="checkbox" name="other">I have restricted goods: radio equipment, cultural property, precious metals, narcotics, wild animals or plants</label>
+<label class="opt out"><input type="checkbox" name="banList">I am carrying goods on the export ban list: metals and scrap, copper or nickel items, timber, raw hides, down and feathers, medical masks or gloves (not personal)</label>
+<label class="opt out"><input type="checkbox" name="metals">I am carrying precious metals, gemstones or items made of them</label>
+<label class="opt out"><input type="checkbox" name="culture">I am carrying cultural property (paintings, antiques, old books)</label>
+</details>
+</form>
+<section id="res"></section>
+<p class="foot">This guidance does not replace a customs officer’s decision. The rules were compiled on 26 Nov 2026 from the Customs Code of Ukraine and Cabinet of Ministers Resolutions No. 434 and 458. If in doubt, choose the red channel or ask an officer at the crossing point.</p>
+</main>
+<script>
+const CALC_URL = '#'; // ← insert the link to your customs duty calculator
+const R = {air:1000, land:500, kg:50, vatLow:50, top:10000, beer:5, wine:2, spirits:1, cig:200, cigar:50, tob:250};
+const LINKS = {
+  'Weapons and ammunition': [['How to get a permit to move weapons (Diia, in Ukrainian)', 'https://guide.diia.gov.ua/view/dozvil-na-perevezennia-cherez-mytnyi-kordon-ukrainy-vohnepalnoi-zbroi-boiovykh-prypasiv-do-nei-osnovnykh-chastyn-zbroi-pnevmatyc-7ee89685-e553-47eb-93dd-4570f313089c']],
+  'Cash of €10,000 or more': [['Rules for moving currency (National Bank of Ukraine, in Ukrainian)', 'https://bank.gov.ua/ua/markets/liberalization/export-cash-abroad'], ['Currency declaration form (.doc file, in Ukrainian)', 'https://zakon.rada.gov.ua/laws/file/text/71/f482396n26.doc']],
+  'Restricted goods': [['List of restricted and prohibited goods (State Customs Service)', 'https://customs.gov.ua/en/tovari-shchodo-iakikh-diiut-obmezhennia']],
+  'Goods on the export ban list': [['List of restricted and prohibited goods (State Customs Service)', 'https://customs.gov.ua/en/tovari-shchodo-iakikh-diiut-obmezhennia']]
+};
+const c = x => Math.round((+x || 0) * 100); // money in cents: the 9999.99 / 10000 boundary matters
+
+function evaluate(a){
+  if (a.out) return evaluateExit(a);
+  const items = [], add = (t, m, d) => items.push({t, m, d});
+  let calc = false;
+  const v = c(a.val), lowVat = a.lt24abroad || a.last !== 'never';
+  // repeat entry and the 24/72-hour conditions apply only within the limits (€500 / 50 kg, air €1,000)
+  const within = a.air ? v <= c(R.air) : (v <= c(R.land) && a.kg <= R.kg);
+  if (v > c(R.top)) add('red', 'Goods worth more than €10,000', 'Declaration under the procedure for businesses (Art. 374(4), Customs Code). The citizens’ calculator does not apply here.');
+  else if (v > 0 && within && a.last === 'lt24') { calc = true; add('red', 'Repeat entry within less than a day', 'Written declaration, 10% duty and VAT on the full value of the goods (Art. 374(2), Customs Code).'); }
+  else if (v > 0 && within && !a.air && lowVat && v > c(R.vatLow)) {
+    calc = true;
+    add('red', 'Over €50 under the 24/72-hour conditions', 'Because you were abroad for less than 24 hours or entered within 72 hours, the VAT threshold is €50 (Tax Code, para. 191.2.3). A written declaration is required.');
+  }
+  else if (!within) {
+    calc = true;
+    add('red', 'Goods threshold exceeded: ' + (a.kg > R.kg && !a.air ? R.kg + ' kg' : (a.air ? R.air : R.land) + ' €'),
+      'A written declaration is required. Only the part above the threshold is taxed; repeat entry and the 24/72-hour conditions do not affect this.');
+  }
+  const any = a.beer + a.wine + a.spirits + a.cig + a.cigar + a.tob > 0;
+  if (any) {
+    const kinds = [a.cig, a.cigar, a.tob].filter(x => x > 0).length;
+    if (!a.adult) add('ban', 'Alcohol and tobacco under 18', 'Persons under 18 may not bring in alcohol or tobacco (Art. 376, Customs Code).');
+    else if (a.lt24abroad) add('red', 'Alcohol and tobacco after being abroad for under 24 hours', 'In this case they are taxed in any quantity (Art. 376(3), Customs Code). Customs calculates the excise duty.');
+    else if (a.beer > R.beer || a.wine > R.wine || a.spirits > R.spirits || a.cig > R.cig || a.cigar > R.cigar || a.tob > R.tob || kinds > 1)
+      add('red', 'Alcohol or tobacco above the allowance', 'Allowance per person: 5 L of beer, 2 L of wine, 1 L of spirits; 200 cigarettes, or 50 cigars, or 250 g of tobacco. Above the allowance a written declaration and excise duty apply.');
+  }
+  if (a.food === 'over') add('ban', 'Food above the allowance', 'Not allowed (Art. 378, Customs Code; Cabinet of Ministers Resolution No. 434): up to €200 per person, up to 2 kg or one package of each item.');
+  if (a.med === 'over') add('red', 'Medicines above the allowance, or narcotic', 'A prescription or certificate in your name, signed and personally stamped by the doctor, is required. Narcotic and psychotropic medicines only with a prescription (Resolution No. 458). We recommend checking with customs.');
+  if (a.gun) add('red', 'Weapons and ammunition', 'A written declaration is mandatory regardless of the method and direction of movement. A permit is required: for Ukrainian citizens from the Ministry of Internal Affairs or the National Police, for foreigners only from the Ministry of Internal Affairs. Army-pattern weapons are not covered here; check their procedure with customs.');
+  if (a.pet) add('red', 'Pet', 'A written declaration and veterinary control are mandatory (Art. 375, Customs Code). See the link below for the veterinary document requirements.');
+  if (c(a.cash) >= c(R.top)) add('red', 'Cash of €10,000 or more', 'A written declaration on the form from Resolution No. 203 and identity documents.' + (c(a.cash) > c(R.top) ? ' Proof of cash withdrawal and exchange is required for the amount above €10,000: ' + ((c(a.cash) - c(R.top)) / 100).toFixed(2) + ' €.' : ''));
+  if (c(a.sec) > c(a.air ? R.air : R.land)) add('red', 'Securities and payment documents above the threshold', 'A written declaration is required (Art. 374, Customs Code).');
+  if (a.other) add('red', 'Restricted goods', 'Permits, licences or certificates are required. The list of codes and documents is published by the State Customs Service: “Goods subject to restrictions”.');
+  return {level: items.length ? 'red' : 'green', items, calc};
+}
+
+function evaluateExit(a){
+  const items = [], add = (t, m, d) => items.push({t, m, d});
+  if (c(a.val) > c(R.top)) add('red', 'Goods worth more than €10,000', 'Written declaration under the procedure for businesses (Art. 371(3), Customs Code). For relocation abroad, inheritance, temporary export or prizes, the procedure for citizens applies (part 4).');
+  if (a.banList) add('ban', 'Goods on the export ban list', 'Not allowed regardless of value (Art. 373(1), Customs Code; Resolution No. 468). Exception for medical items: personal belongings in hand luggage or accompanied baggage.');
+  if (a.alcOut && !a.adult) add('ban', 'Alcohol and tobacco under 18', 'Persons under 18 may not take alcohol or tobacco out of Ukraine (Art. 373(4), Customs Code).');
+  if (a.metals) add('red', 'Precious metals, gemstones or items made of them', 'Raw and semi-processed metals and scrap are banned from export. For items and personal jewellery we recommend checking with customs. For sale or transfer: up to €10,000 an oral declaration, over €10,000 the export regime (Resolution No. 448).');
+  if (a.culture) add('red', 'Cultural property', 'An export certificate and a written declaration are required regardless of value (Art. 371–372, Customs Code; Resolution No. 448).');
+  if (c(a.cash) >= c(R.top)) add('red', 'Cash of €10,000 or more', 'A written declaration on the form from Resolution No. 203 and identity documents.' + (c(a.cash) > c(R.top) ? ' Proof of cash withdrawal and exchange is required for the amount above €10,000: ' + ((c(a.cash) - c(R.top)) / 100).toFixed(2) + ' €.' : ''));
+  if (a.gun) add('red', 'Weapons and ammunition', 'A written declaration is mandatory regardless of the method and direction of movement. A permit is required: for Ukrainian citizens from the Ministry of Internal Affairs or the National Police, for foreigners only from the Ministry of Internal Affairs.');
+  if (a.pet) add('red', 'Pet', 'Pets must be declared. Prepare veterinary documents and check the destination country’s requirements in advance.');
+  if (a.other) add('red', 'Restricted goods', 'Permits, licences or certificates are required. The list of codes and documents is published by the State Customs Service: “Goods subject to bans and restrictions”, with separate lists for export.');
+  return {level: items.length ? 'red' : 'green', items, calc: false};
+}
+
+const f = document.getElementById('f');
+const num = n => parseFloat(f.elements[n].value) || 0;
+function read(){
+  return {air: f.port.value === 'air', lt24abroad: f.abroad.value === '0', last: f.old72.value === '1' ? 'never' : (f.day.value === '1' ? 'lt24' : 'lt72'),
+    val: num('val'), kg: num('kg'), adult: f.adult.value === '1',
+    beer: num('beer'), wine: num('wine'), spirits: num('spirits'), cig: num('cig'), cigar: num('cigar'), tob: num('tob'),
+    food: f.food.value, med: f.med.value, cash: num('cash'), sec: num('sec'), pet: f.pet.checked, gun: f.gun.checked, other: f.other.checked,
+    out: f.dir.value === 'out', alcOut: f.alcOut.checked, culture: f.culture.checked, metals: f.metals.checked, banList: f.banList.checked};
+}
+const esc = s => s.replace(/[&<>]/g, ch => ({'&': '&amp;', '<': '&lt;', '>': '&gt;'}[ch]));
+function render(){
+  document.body.classList.toggle('exit', f.dir.value === 'out');
+  const A = f.old72.value === '0' && f.day.value === '1';
+  document.getElementById('d24').hidden = f.old72.value === '1';
+  if (A) f.abroad.value = '0'; // repeat entry within a day means being abroad for under 24 h
+  f.querySelectorAll('input[name="abroad"]').forEach(i => i.disabled = A);
+  const a = read(), r = evaluate(a), red = r.level === 'red';
+  document.body.classList.toggle('red', red);
+  document.getElementById('vt').textContent = red ? 'Red channel' : 'Green channel';
+  document.getElementById('vs').textContent = red ? 'A written declaration is required' : 'All within allowed limits';
+  let h = '';
+  if (!red) h = '<div class="ok">You can choose the green channel. This is your oral declaration: the goods are not subject to written declaration or taxation.</div>';
+  else {
+    h = '<h2>Why red</h2>' + r.items.map(i => '<div class="it ' + i.t + '">' + (i.t === 'ban' ? '<span class="tag">Not allowed</span>' : '') + '<b>' + esc(i.m) + '</b><p>' + esc(i.d) + '</p>' + (i.m === 'Pet' ? '<p><a href="https://dpss.gov.ua/mizhnarodne-spivrobitnictv/veterinariya-ta-bezpechnist/vimogi-do-nekomercijnogo-peremishchennya-tvarin" target="_blank" rel="noopener">State Food Safety and Consumer Protection Service requirements for moving animals (in Ukrainian)</a></p>' : '') + (LINKS[i.m] || []).map(l => '<p><a href="' + l[1] + '" target="_blank" rel="noopener">' + l[0] + '</a></p>').join('') + '</div>').join('');
+    if (r.calc) {
+      const q = new URLSearchParams({entry: a.air ? 'air' : 'land', value: a.val, weight: a.kg, lt24abroad: a.lt24abroad ? 1 : 0, last: a.last});
+      h += '<a class="btn" href="' + CALC_URL + '?' + q + '">Calculate duty and VAT</a>';
+    }
+  }
+  document.getElementById('res').innerHTML = h;
+}
+f.addEventListener('input', render);
+render();
+
+// Boundary self-test (result in the browser console)
+(function(){
+  const base = {air: false, lt24abroad: false, last: 'never', val: 0, kg: 0, adult: true, beer: 0, wine: 0, spirits: 0, cig: 0, cigar: 0, tob: 0, food: 'none', med: 'none', cash: 0, sec: 0, pet: false, other: false};
+  const T = (n, o, exp) => console.assert(evaluate(Object.assign({}, base, o)).level === exp, 'FAIL: ' + n);
+  T('empty', {}, 'green'); T('500 €', {val: 500}, 'green'); T('500,01 €', {val: 500.01}, 'red');
+  T('50 kg', {kg: 50}, 'green'); T('50,1 kg', {kg: 50.1}, 'red');
+  T('air 1000 €', {air: true, val: 1000}, 'green'); T('air 1000.01 €', {air: true, val: 1000.01}, 'red');
+  T('<24 h, 50 €', {lt24abroad: true, val: 50}, 'green'); T('<24 h, 50.01 €', {lt24abroad: true, val: 50.01}, 'red');
+  T('repeat entry', {last: 'lt24', val: 10}, 'red');
+  T('cash 9999.99', {cash: 9999.99}, 'green'); T('cash 10000', {cash: 10000}, 'red');
+  T('wine 2 L', {wine: 2}, 'green'); T('wine 2.1 L', {wine: 2.1}, 'red');
+  T('alcohol <24 h', {lt24abroad: true, beer: 1}, 'red'); T('under 18', {adult: false, beer: 1}, 'red');
+  T('exit 10000 €', {out: true, val: 10000}, 'green'); T('exit 10000.01 €', {out: true, val: 10000.01}, 'red');
+  T('exit cash 9999.99', {out: true, cash: 9999.99}, 'green'); T('exit cash 10000', {out: true, cash: 10000}, 'red');
+  T('exit gold', {out: true, metals: true}, 'red'); T('exit alcohol under 18', {out: true, alcOut: true, adult: false}, 'red');
+})();
+</script>
+</body>
+</html>
