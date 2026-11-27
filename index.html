@@ -49,7 +49,16 @@ input:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(
 </style>
 </head>
 <body>
-<header><div class="hd" role="status" aria-live="polite"><b id="vt">Зелений коридор</b><span id="vs">Усе в межах норм</span></div></header>
+  <!-- У <header> можна додати лічильник/посилання до причин -->
+<header>
+  <div class="hd" role="status" aria-live="polite">
+    <div>
+      <b id="vt">Зелений коридор</b>
+      <span id="vs">Усе в межах норм</span>
+    </div>
+    <a id="jumpRes" href="#res" class="pill" hidden>Причини</a>
+  </div>
+</header>
 <main>
 <h1>Відповідайте на питання, а підсумок зверху оновлюється одразу. Заповнюйте лише те, що везете.</h1>
 <form id="f" onsubmit="return false">
