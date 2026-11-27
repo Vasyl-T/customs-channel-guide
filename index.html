@@ -12,17 +12,19 @@
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f161c;--card:#17212a;--ink:#e8eef3;--mute:#9aabb9;--line:#2b3945;--g:#58c58b;--gbg:#12311f;--r:#ff8a78;--rbg:#3a1b16;--ac:#7cc4f0;--on:#0f161c}}
 :root[data-theme="dark"]{--bg:#0f161c;--card:#17212a;--ink:#e8eef3;--mute:#9aabb9;--line:#2b3945;--g:#58c58b;--gbg:#12311f;--r:#ff8a78;--rbg:#3a1b16;--ac:#7cc4f0;--on:#0f161c}
-html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 80px)}
+html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 84px)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 Onest,system-ui,-apple-system,"Segoe UI",sans-serif}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--g)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:20;background:var(--g);transition:background .2s}
 body.red::before{background:var(--r)}
-header{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--g);color:var(--on);padding:14px 18px;transition:background .25s}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:15;background:var(--g);color:var(--on);padding:14px 18px;transition:background .2s}
 body.red header{background:var(--r)}
-.hd{max-width:640px;margin:0 auto}
-.hd b{display:block;font-size:26px;font-weight:800;line-height:1.1}
-.hd span{font-size:14px;opacity:.92}
-main{max-width:640px;margin:0 auto;padding:16px 16px 40px}
+.hd{max-width:640px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.hd b{display:block;font-size:24px;font-weight:800;line-height:1.12}
+.hd span{font-size:14px;opacity:.94}
+.pill{color:var(--on);border:1.5px solid currentColor;border-radius:999px;padding:7px 13px;font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap;flex-shrink:0}
+.pill:hover{background:rgba(255,255,255,.14)}
+main{max-width:640px;margin:0 auto;padding:16px 16px 48px}
 h1{font-size:15px;font-weight:500;color:var(--mute);margin:4px 2px 14px}
 fieldset,details{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:0 0 12px;padding:14px 16px}
 legend{font-weight:700;padding:0 6px}
@@ -32,9 +34,12 @@ label{display:block;margin:10px 0 2px;font-size:15px}
 .opt{display:flex;gap:10px;align-items:flex-start;margin:6px 0;font-weight:400}
 .opt input{margin-top:5px}
 input[type=number]{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
-input:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+input:focus-visible,summary:focus-visible,a:focus-visible,button:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .hint{font-size:13px;color:var(--mute);margin:4px 0 0}
+.top-actions{display:flex;justify-content:flex-end;margin:0 0 10px}
+.reset-btn{background:transparent;color:var(--mute);border:1px solid var(--line);border-radius:8px;padding:6px 12px;font:500 13px/1.2 inherit;cursor:pointer}
+.reset-btn:hover{color:var(--ink);border-color:var(--ink)}
 #res h2{font-size:18px;margin:22px 2px 10px}
 .it{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--r);border-radius:8px;padding:12px 14px;margin:0 0 10px}
 .it.ban{border-left-color:var(--ink)}
@@ -46,21 +51,46 @@ input:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(
 .foot{font-size:13px;color:var(--mute);margin-top:22px}
 .out{display:none}body.exit .out{display:flex}body.exit .in{display:none}
 .it a{color:var(--ac);font-weight:500}
+
+/* Постійний нижній індикатор для мобільних екранів */
+.mob-bar{display:none}
+@media (max-width:640px){
+  header{padding:11px 14px}
+  .hd b{font-size:21px}
+  .hd span{font-size:12px}
+  main{padding-bottom:92px}
+  html{scroll-padding-bottom:calc(env(safe-area-inset-bottom,0px) + 76px)}
+  .mob-bar{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    position:fixed;left:0;right:0;bottom:env(safe-area-inset-bottom,0px);z-index:16;
+    background:var(--g);color:var(--on);padding:10px 14px;
+    box-shadow:0 -4px 16px rgba(0,0,0,.14);transition:background .2s
+  }
+  body.red .mob-bar{background:var(--r)}
+  .mob-bar strong{display:block;font-size:15px;font-weight:800;line-height:1.15}
+  .mob-bar small{display:block;font-size:12px;opacity:.92}
+  .mob-link{
+    color:var(--on);background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.45);
+    border-radius:999px;padding:6px 12px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap
+  }
+}
 </style>
 </head>
 <body>
-  <!-- У <header> можна додати лічильник/посилання до причин -->
 <header>
   <div class="hd" role="status" aria-live="polite">
     <div>
       <b id="vt">Зелений коридор</b>
       <span id="vs">Усе в межах норм</span>
     </div>
-    <a id="jumpRes" href="#res" class="pill" hidden>Причини</a>
+    <a id="jumpTop" href="#res" class="pill" hidden>Причини (0)</a>
   </div>
 </header>
+
 <main>
-<h1>Відповідайте на питання, а підсумок зверху оновлюється одразу. Заповнюйте лише те, що везете.</h1>
+<h1>Відповідайте на питання, а підсумок оновлюється одразу. Заповнюйте лише те, що везете.</h1>
+<div class="top-actions"><button type="button" id="resetBtn" class="reset-btn">Очистити форму</button></div>
+
 <form id="f" onsubmit="return false">
 <fieldset><legend>Напрямок</legend>
 <label class="opt"><input type="radio" name="dir" value="in" checked>В’їзд в Україну</label>
@@ -126,9 +156,19 @@ input:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(
 <label class="opt out"><input type="checkbox" name="culture">Везу культурні цінності (картини, антикваріат, старовинні книги)</label>
 </details>
 </form>
+
 <section id="res"></section>
 <p class="foot">Підказка не замінює рішення митниці. Правила складено 26.11.2026 за Митним кодексом України та постановами КМУ № 434, 458. Якщо сумніваєтеся, оберіть червоний коридор або запитайте митника в пункті пропуску.</p>
 </main>
+
+<div class="mob-bar" aria-hidden="true">
+  <div>
+    <strong id="mvt">Зелений коридор</strong>
+    <small id="mvs">Усе в межах норм</small>
+  </div>
+  <a id="jumpMob" href="#res" class="mob-link" hidden>Причини (0)</a>
+</div>
+
 <script>
 const CALC_URL = '#'; // ← вставте посилання на ваш калькулятор розмитнення
 const R = {air:1000, land:500, kg:50, vatLow:50, top:10000, beer:5, wine:2, spirits:1, cig:200, cigar:50, tob:250};
@@ -138,34 +178,49 @@ const LINKS = {
   'Товари з обмеженнями': [['Перелік товарів з обмеженнями та заборонами (Держмитслужба)', 'https://customs.gov.ua/en/tovari-shchodo-iakikh-diiut-obmezhennia']],
   'Товари з переліку заборонених до вивезення': [['Перелік товарів з обмеженнями та заборонами (Держмитслужба)', 'https://customs.gov.ua/en/tovari-shchodo-iakikh-diiut-obmezhennia']]
 };
-const c = x => Math.round((+x || 0) * 100); // гроші в центах: межа 9999,99 / 10000 важлива
+const c = x => Math.round((+x || 0) * 100);
 
 function evaluate(a){
   if (a.out) return evaluateExit(a);
   const items = [], add = (t, m, d) => items.push({t, m, d});
   let calc = false;
   const v = c(a.val), lowVat = a.lt24abroad || a.last !== 'never';
-  // повторність в’їзду й умови 24/72 діють лише в межах порогів (500 €/50 кг, авіа 1000 €)
   const within = a.air ? v <= c(R.air) : (v <= c(R.land) && a.kg <= R.kg);
-  if (v > c(R.top)) add('red', 'Товарів понад 10 000 €', 'Декларування за порядком для підприємств (ст. 374 ч. 4 МКУ). Калькулятор громадян тут не застосовується.');
-  else if (v > 0 && within && a.last === 'lt24') { calc = true; add('red', 'Повторний в’їзд менш ніж за добу', 'Письмове декларування, мито 10% і ПДВ на повну вартість товарів (ст. 374 ч. 2 МКУ).'); }
-  else if (v > 0 && within && !a.air && lowVat && v > c(R.vatLow)) {
-    calc = true;
-    add('red', 'Понад 50 € за умов 24/72 години', 'Через перебування за кордоном менше 24 год або в’їзд протягом 72 год поріг для ПДВ становить 50 € (п. 191.2.3 ПКУ). Потрібне письмове декларування.');
+
+  // Збираємо всі причини за звичайними товарами без переривання інших категорій
+  if (v > c(R.top)) {
+    add('red', 'Товарів понад 10 000 €', 'Декларування за порядком для підприємств (ст. 374 ч. 4 МКУ). Калькулятор громадян тут не застосовується.');
+  } else {
+    if (v > 0 && within && a.last === 'lt24') {
+      calc = true;
+      add('red', 'Повторний в’їзд менш ніж за добу', 'Письмове декларування, мито 10% і ПДВ на повну вартість товарів (ст. 374 ч. 2 МКУ).');
+    }
+    if (v > 0 && within && !a.air && lowVat && v > c(R.vatLow)) {
+      calc = true;
+      add('red', 'Понад 50 € за умов 24/72 години', 'Через перебування за кордоном менше 24 год або в’їзд протягом 72 год поріг для ПДВ становить 50 € (п. 191.2.3 ПКУ). Потрібне письмове декларування.');
+    }
+    if (!within) {
+      calc = true;
+      add('red', 'Перевищено поріг для товарів: ' + (a.kg > R.kg && !a.air ? R.kg + ' кг' : (a.air ? R.air : R.land) + ' €'),
+        'Потрібне письмове декларування. Оподатковується лише частина понад поріг; повторність в’їзду й умови 24/72 години тут не впливають.');
+    }
   }
-  else if (!within) {
-    calc = true;
-    add('red', 'Перевищено поріг для товарів: ' + (a.kg > R.kg && !a.air ? R.kg + ' кг' : (a.air ? R.air : R.land) + ' €'),
-      'Потрібне письмове декларування. Оподатковується лише частина понад поріг; повторність в’їзду й умови 24/72 години тут не впливають.');
-  }
+
+  // Алкоголь і тютюн перевіряємо незалежно від товарів
   const any = a.beer + a.wine + a.spirits + a.cig + a.cigar + a.tob > 0;
   if (any) {
     const kinds = [a.cig, a.cigar, a.tob].filter(x => x > 0).length;
-    if (!a.adult) add('ban', 'Алкоголь і тютюн до 18 років', 'Ввезення особами до 18 років не допускається (ст. 376 МКУ).');
-    else if (a.lt24abroad) add('red', 'Алкоголь і тютюн після виїзду менш ніж на 24 год', 'У такому разі вони оподатковуються за будь-якої кількості (ст. 376 ч. 3 МКУ). Акциз розраховує митниця.');
-    else if (a.beer > R.beer || a.wine > R.wine || a.spirits > R.spirits || a.cig > R.cig || a.cigar > R.cigar || a.tob > R.tob || kinds > 1)
+    if (!a.adult) {
+      add('ban', 'Алкоголь і тютюн до 18 років', 'Ввезення особами до 18 років не допускається (ст. 376 МКУ).');
+    }
+    if (a.adult && a.lt24abroad) {
+      add('red', 'Алкоголь і тютюн після виїзду менш ніж на 24 год', 'У такому разі вони оподатковуються за будь-якої кількості (ст. 376 ч. 3 МКУ). Акциз розраховує митниця.');
+    }
+    if (a.adult && !a.lt24abroad && (a.beer > R.beer || a.wine > R.wine || a.spirits > R.spirits || a.cig > R.cig || a.cigar > R.cigar || a.tob > R.tob || kinds > 1)) {
       add('red', 'Алкоголь або тютюн понад норму', 'Норма на особу: 5 л пива, 2 л вина, 1 л міцних; 200 сигарет, або 50 сигар, або 250 г тютюну. Понад норму є письмове декларування й акциз.');
+    }
   }
+
   if (a.food === 'over') add('ban', 'Харчові продукти понад норму', 'Не допускається (ст. 378 МКУ, постанова КМУ № 434): до 200 € на особу, до 2 кг або однієї упаковки кожного найменування.');
   if (a.med === 'over') add('red', 'Ліки понад норму або наркотичні', 'Потрібен рецепт або довідка на ваше ім’я з підписом і особистою печаткою лікаря. Наркотичні й психотропні лише за рецептом (постанова КМУ № 458). Радимо уточнити в митниці.');
   if (a.gun) add('red', 'Зброя та боєприпаси', 'Обов’язкове письмове декларування за будь-якого способу й напрямку. Потрібен дозвіл: для громадян України від МВС або Національної поліції, для іноземців лише від МВС. Зброя армійських зразків сюди не належить, її порядок уточніть у митниці.');
@@ -173,6 +228,7 @@ function evaluate(a){
   if (c(a.cash) >= c(R.top)) add('red', 'Готівка від 10 000 €', 'Письмова декларація за формою постанови КМУ № 203 і документи, що посвідчують особу.' + (c(a.cash) > c(R.top) ? ' Підтвердження зняття готівки й обміну потрібне на суму понад 10 000 €: ' + ((c(a.cash) - c(R.top)) / 100).toFixed(2) + ' €.' : ''));
   if (c(a.sec) > c(a.air ? R.air : R.land)) add('red', 'Цінні папери й платіжні документи понад поріг', 'Потрібне письмове декларування (ст. 374 МКУ).');
   if (a.other) add('red', 'Товари з обмеженнями', 'Потрібні дозволи, ліцензії чи свідоцтва. Перелік кодів і документів публікує Держмитслужба: «Товари, щодо яких діють обмеження».');
+
   return {level: items.length ? 'red' : 'green', items, calc};
 }
 
@@ -192,41 +248,98 @@ function evaluateExit(a){
 
 const f = document.getElementById('f');
 const num = n => parseFloat(f.elements[n].value) || 0;
-function read(){
-  return {air: f.port.value === 'air', lt24abroad: f.abroad.value === '0', last: f.old72.value === '1' ? 'never' : (f.day.value === '1' ? 'lt24' : 'lt72'),
-    val: num('val'), kg: num('kg'), adult: f.adult.value === '1',
-    beer: num('beer'), wine: num('wine'), spirits: num('spirits'), cig: num('cig'), cigar: num('cigar'), tob: num('tob'),
-    food: f.food.value, med: f.med.value, cash: num('cash'), sec: num('sec'), pet: f.pet.checked, gun: f.gun.checked, other: f.other.checked,
-    out: f.dir.value === 'out', alcOut: f.alcOut.checked, culture: f.culture.checked, metals: f.metals.checked, banList: f.banList.checked};
+
+function clearHiddenFields(isExit){
+  const selector = isExit ? '.in input' : '.out input';
+  f.querySelectorAll(selector).forEach(el => {
+    if (el.type === 'checkbox') el.checked = false;
+    else if (el.type === 'number') el.value = '';
+  });
 }
-const esc = s => s.replace(/[&<>]/g, ch => ({'&': '&amp;', '<': '&lt;', '>': '&gt;'}[ch]));
+
+function read(){
+  return {
+    air: f.port.value === 'air',
+    lt24abroad: f.abroad.value === '0',
+    last: f.old72.value === '1' ? 'never' : (f.day.value === '1' ? 'lt24' : 'lt72'),
+    val: num('val'), kg: num('kg'), adult: f.adult.value === '1',
+    beer: num('beer'), wine: num('wine'), spirits: num('spirits'),
+    cig: num('cig'), cigar: num('cigar'), tob: num('tob'),
+    food: f.food.value, med: f.med.value, cash: num('cash'), sec: num('sec'),
+    pet: f.pet.checked, gun: f.gun.checked, other: f.other.checked,
+    out: f.dir.value === 'out', alcOut: f.alcOut.checked,
+    culture: f.culture.checked, metals: f.metals.checked, banList: f.banList.checked
+  };
+}
+
+const esc = s => s.replace(/[&<>"]/g, ch => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[ch]));
+
 function render(){
-  document.body.classList.toggle('exit', f.dir.value === 'out');
+  const isExit = f.dir.value === 'out';
+  document.body.classList.toggle('exit', isExit);
   const A = f.old72.value === '0' && f.day.value === '1';
   document.getElementById('d24').hidden = f.old72.value === '1';
-  if (A) f.abroad.value = '0'; // повторний в’їзд за добу означає, що за кордоном були менше 24 год
+  if (A) f.abroad.value = '0';
   f.querySelectorAll('input[name="abroad"]').forEach(i => i.disabled = A);
+
   const a = read(), r = evaluate(a), red = r.level === 'red';
+  const titleText = red ? 'Червоний коридор' : 'Зелений коридор';
+  const subText = red ? 'Потрібне письмове декларування' : 'Усе в межах норм';
+  const count = r.items.length;
+
   document.body.classList.toggle('red', red);
-  document.getElementById('vt').textContent = red ? 'Червоний коридор' : 'Зелений коридор';
-  document.getElementById('vs').textContent = red ? 'Потрібне письмове декларування' : 'Усе в межах норм';
+  document.getElementById('vt').textContent = titleText;
+  document.getElementById('vs').textContent = subText;
+  document.getElementById('mvt').textContent = titleText;
+  document.getElementById('mvs').textContent = subText;
+
+  const jumpTop = document.getElementById('jumpTop');
+  const jumpMob = document.getElementById('jumpMob');
+  jumpTop.hidden = !red;
+  jumpMob.hidden = !red;
+  if (red) {
+    jumpTop.textContent = `Причини (${count})`;
+    jumpMob.textContent = `Причини (${count})`;
+  }
+
   let h = '';
-  if (!red) h = '<div class="ok">Ви можете обрати зелений коридор. Це ваше усне декларування: товари не підлягають письмовому декларуванню й оподаткуванню.</div>';
-  else {
-    h = '<h2>Чому червоний</h2>' + r.items.map(i => '<div class="it ' + i.t + '">' + (i.t === 'ban' ? '<span class="tag">Не допускається</span>' : '') + '<b>' + esc(i.m) + '</b><p>' + esc(i.d) + '</p>' + (i.m === 'Домашня тварина' ? '<p><a href="https://dpss.gov.ua/mizhnarodne-spivrobitnictv/veterinariya-ta-bezpechnist/vimogi-do-nekomercijnogo-peremishchennya-tvarin" target="_blank" rel="noopener">Вимоги Держпродспоживслужби до переміщення тварин</a></p>' : '') + (LINKS[i.m] || []).map(l => '<p><a href="' + l[1] + '" target="_blank" rel="noopener">' + l[0] + '</a></p>').join('') + '</div>').join('');
-    if (r.calc) {
+  if (!red) {
+    h = '<div class="ok">Ви можете обрати зелений коридор. Це ваше усне декларування: товари не підлягають письмовому декларуванню й оподаткуванню.</div>';
+  } else {
+    h = '<h2>Чому червоний</h2>' + r.items.map(i =>
+      '<div class="it ' + i.t + '">' +
+      (i.t === 'ban' ? '<span class="tag">Не допускається</span>' : '') +
+      '<b>' + esc(i.m) + '</b><p>' + esc(i.d) + '</p>' +
+      (i.m === 'Домашня тварина' ? '<p><a href="https://dpss.gov.ua/mizhnarodne-spivrobitnictv/veterinariya-ta-bezpechnist/vimogi-do-nekomercijnogo-peremishchennya-tvarin" target="_blank" rel="noopener noreferrer">Вимоги Держпродспоживслужби до переміщення тварин</a></p>' : '') +
+      (LINKS[i.m] || []).map(l => '<p><a href="' + l[1] + '" target="_blank" rel="noopener noreferrer">' + l[0] + '</a></p>').join('') +
+      '</div>'
+    ).join('');
+    if (r.calc && CALC_URL !== '#') {
       const q = new URLSearchParams({entry: a.air ? 'air' : 'land', value: a.val, weight: a.kg, lt24abroad: a.lt24abroad ? 1 : 0, last: a.last});
       h += '<a class="btn" href="' + CALC_URL + '?' + q + '">Розрахувати мито й ПДВ</a>';
     }
   }
   document.getElementById('res').innerHTML = h;
 }
+
+f.addEventListener('change', e => {
+  if (e.target && e.target.name === 'dir') {
+    clearHiddenFields(e.target.value === 'out');
+  }
+  render();
+});
 f.addEventListener('input', render);
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  f.reset();
+  render();
+});
+
 render();
 
 // Самоперевірка меж (результат у консолі браузера)
 (function(){
-  const base = {air: false, lt24abroad: false, last: 'never', val: 0, kg: 0, adult: true, beer: 0, wine: 0, spirits: 0, cig: 0, cigar: 0, tob: 0, food: 'none', med: 'none', cash: 0, sec: 0, pet: false, other: false};
+  const base = {air: false, lt24abroad: false, last: 'never', val: 0, kg: 0, adult: true, beer: 0, wine: 0, spirits: 0, cig: 0, cigar: 0, tob: 0, food: 'none', med: 'none', cash: 0, sec: 0, pet: false, gun: false, other: false, out: false, alcOut: false, culture: false, metals: false, banList: false};
   const T = (n, o, exp) => console.assert(evaluate(Object.assign({}, base, o)).level === exp, 'FAIL: ' + n);
   T('порожньо', {}, 'green'); T('500 €', {val: 500}, 'green'); T('500,01 €', {val: 500.01}, 'red');
   T('50 кг', {kg: 50}, 'green'); T('50,1 кг', {kg: 50.1}, 'red');
